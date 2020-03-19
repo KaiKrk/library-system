@@ -33,8 +33,8 @@ public class MemberController {
     }
 
     @GetMapping("/list")
-    public List<Member> listContact() {
+    public ResponseEntity<List<Member> >listContact() {
         List<Member> Members = memberService.findAll();
-        return Members;
+        return new ResponseEntity<>(Members,HttpStatus.OK);
     }
 }
