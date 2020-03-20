@@ -1,6 +1,7 @@
 package oc.projet7.Controller;
 import oc.projet7.Entity.Book;
 import oc.projet7.Service.BookService;
+import oc.projet7.bean.MailDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

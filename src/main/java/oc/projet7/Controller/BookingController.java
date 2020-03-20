@@ -26,14 +26,20 @@ public class BookingController {
 
     @PostMapping("/saveBooking")
     public ResponseEntity<Booking> save(@RequestBody Book book, @RequestBody Booking booking, @RequestBody Member member) {
-        bookingService.save(booking, member, book);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        LocalDate futureDate = LocalDate.now().plusMonths(1);
+        booking.setReturn_date(futureDate);
+        booking.setMembre(member);
+        booking.setBook(book);
+       Booking newBooking =  bookingService.save(booking);
+        return new ResponseEntity<>(newBooking, HttpStatus.CREATED);
     }
 
     @GetMapping("/status")
     public ResponseEntity<Booking> changeStatus(@RequestBody Booking booking, String status){
         bookingService.changeStatus(booking,status);
-        return new ResponseEntity<>(HttpStatus.OK);
+
+        Booking newBooking = bookingService.save(booking);
+        return new ResponseEntity<>(newBooking, HttpStatus.OK);
     }
 
     @GetMapping("/myBooking")
@@ -43,6 +49,18 @@ public class BookingController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(myBooking, HttpStatus.OK);
+    }
+
+    @GetMapping("/extendBooking")
+    public ResponseEntity<Booking> extendDate(@RequestBody Booking booking){
+        if (booking.getRenewable().equals(true)){
+            LocalDate futureDate = LocalDate.now().plusMonths(1);
+            booking.setReturn_date(futureDate);
+            booking.setRenewable(false);
+            bookingService.save(booking);
+            return new ResponseEntity<>(booking, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @Scheduled(cron = "0 0 6 * * ?")
