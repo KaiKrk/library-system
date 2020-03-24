@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class MailDetails {
 
-    @Autowired
-    MemberService memberService;
+//    @Autowired
+//    MemberService memberService;
 
     @Value("${account}")
     private  String myAccountEmail;
