@@ -1,12 +1,10 @@
 package oc.projet7.Controller;
 
-import oc.projet7.Entity.Member;
 import oc.projet7.Model.AuthenticationRequest;
-import oc.projet7.Model.AuthenticationResponse;
-import oc.projet7.Repository.MemberRepository;
 import oc.projet7.Security.MyUserDetailsService;
 import oc.projet7.Service.MemberService;
 import oc.projet7.bean.AuthUser;
+import oc.projet7.bean.MemberDto;
 import oc.projet7.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
-
 @RestController
 public class JwtController {
     @Autowired
@@ -32,8 +28,6 @@ public class JwtController {
     @Autowired
     private MemberService memberService;
 
-    @Autowired
-    private MemberRepository memberRepository;
 
     @Autowired
     private MyUserDetailsService userDetailsService;
@@ -55,10 +49,14 @@ public class JwtController {
                 .loadUserByUsername(authenticationRequest.getUsername());
 
         final String jwt = jwtTokenUtil.generateToken(userDetails);
-        Member member = memberRepository.findMemberByEmail(authenticationRequest.getUsername());
+        MemberDto member = memberService.getMember(authenticationRequest.getUsername());
+        System.out.println(member.toString());
         AuthUser authUser= new AuthUser();
-        authUser.setEmail(member.getEmail()); authUser.setName(member.getName()); authUser.setSurname(member.getSurname()); authUser.setToken(jwt);
-
-        return ResponseEntity.ok(new AuthenticationResponse(authUser));
+        authUser.setEmail(member.getEmail());
+        authUser.setName(member.getName());
+        authUser.setSurname(member.getSurname());
+        authUser.setToken(jwt);
+        System.out.println(authUser.toString());
+        return ResponseEntity.ok(authUser);
     }
 }

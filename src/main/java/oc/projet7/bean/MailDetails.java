@@ -1,8 +1,5 @@
 package oc.projet7.bean;
 
-import oc.projet7.Entity.Book;
-import oc.projet7.Service.MemberService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

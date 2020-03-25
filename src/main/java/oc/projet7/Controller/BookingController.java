@@ -4,6 +4,7 @@ import oc.projet7.Entity.Book;
 import oc.projet7.Entity.Booking;
 import oc.projet7.Entity.Member;
 import oc.projet7.Service.BookingService;
+import oc.projet7.bean.BookingDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,8 +44,8 @@ public class BookingController {
     }
 
     @GetMapping("/myBooking")
-    public ResponseEntity<List<Booking>> MyBooking(@RequestBody Member member){
-        List<Booking> myBooking = bookingService.findMyBooking(member);
+    public ResponseEntity<List<BookingDto>> MyBooking(@RequestBody Member member){
+        List<BookingDto> myBooking = bookingService.findMyBooking(member);
         if (myBooking.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -65,7 +66,7 @@ public class BookingController {
 
     @Scheduled(cron = "0 0 6 * * ?")
     public void checkReturnDate() throws MessagingException {
-        List<Booking> bookingList = bookingService.findAll();
+        List<Booking> bookingList = bookingService.findAllByStatus();
         bookingService.checkDate(bookingList);
     }
 

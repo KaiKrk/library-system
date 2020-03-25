@@ -2,9 +2,9 @@ package oc.projet7.Controller;
 
 import oc.projet7.Entity.Member;
 import oc.projet7.Service.MemberService;
+import oc.projet7.bean.MemberDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,9 +32,10 @@ public class MemberController {
         return new ResponseEntity<>(member, HttpStatus.CREATED);
     }
 
-    @GetMapping("/list")
-    public ResponseEntity<List<Member> >listContact() {
-        List<Member> Members = memberService.findAll();
-        return new ResponseEntity<>(Members,HttpStatus.OK);
+    @GetMapping("/members")
+    public ResponseEntity<List<MemberDto> >listContact() {
+        List<MemberDto> members = memberService.findAll();
+        System.out.println(members);
+        return new ResponseEntity<>(members,HttpStatus.OK);
     }
 }

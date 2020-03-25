@@ -23,6 +23,7 @@ public class Member {
     @Column(name = "password")
     private String password;
 
+
     public int getId() {
         return id;
     }
@@ -71,5 +72,16 @@ public class Member {
     }
 
     public Member() {
+    }
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

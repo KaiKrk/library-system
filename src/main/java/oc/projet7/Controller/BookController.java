@@ -1,7 +1,7 @@
 package oc.projet7.Controller;
 import oc.projet7.Entity.Book;
 import oc.projet7.Service.BookService;
-import oc.projet7.bean.MailDetails;
+import oc.projet7.bean.BookDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +19,8 @@ public class BookController {
     private BookService bookService;
 
     @GetMapping("/books")
-    public ResponseEntity<List<Book>> books(){
-        List<Book> booksList = bookService.findAll();
+    public ResponseEntity<List<BookDto>> books(){
+        List<BookDto> booksList = bookService.findAll();
         if (booksList.isEmpty()){
             return new ResponseEntity<>( HttpStatus.NOT_FOUND);
         }

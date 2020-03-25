@@ -38,4 +38,14 @@ public class AuthUser {
     public void setToken(String token) {
         this.token = token;
     }
+
+    @Override
+    public String toString() {
+        return "AuthUser{" +
+                "email='" + email + '\'' +
+                ", surname='" + surname + '\'' +
+                ", name='" + name + '\'' +
+                ", token='" + token + '\'' +
+                '}';
+    }
 }
