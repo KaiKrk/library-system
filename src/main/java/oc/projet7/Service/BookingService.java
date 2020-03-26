@@ -24,7 +24,7 @@ import java.util.Properties;
 @Service
 public class BookingService {
 
-    @Value("bookingStatus")
+    @Value("${bookingStatus}")
     private static String bookingStatus;
 
     @Value("${account}")

@@ -27,8 +27,11 @@ public class BookingController {
 
     @PostMapping("/saveBooking")
     public ResponseEntity<Booking> save(@RequestBody Book book, @RequestBody Booking booking, @RequestBody Member member) {
+        LocalDate today =  LocalDate.now();
         LocalDate futureDate = LocalDate.now().plusMonths(1);
+        booking.setBorrowing_date(today);
         booking.setReturn_date(futureDate);
+        booking.setRenewable(true);
         booking.setMembre(member);
         booking.setBook(book);
        Booking newBooking =  bookingService.save(booking);
