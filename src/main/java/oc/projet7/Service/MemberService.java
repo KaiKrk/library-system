@@ -26,9 +26,14 @@ public class MemberService {
 
     }
 
-    public MemberDto getMember(String email){
+    public MemberDto getMemberDto(String email){
         Member member = memberRepository.findMemberByEmail(email);
         return new MemberDto(member);
+    }
+
+    public Member getMember(String email){
+        Member member = memberRepository.findMemberByEmail(email);
+        return member;
     }
 
     public List<MemberDto> MemberListToDto(List<Member> memberList){

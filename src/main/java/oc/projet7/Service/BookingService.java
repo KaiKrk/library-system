@@ -1,13 +1,11 @@
 package oc.projet7.Service;
 
-import oc.projet7.Entity.Book;
 import oc.projet7.Entity.Booking;
 import oc.projet7.Entity.BookingStatus;
 import oc.projet7.Entity.Member;
 import oc.projet7.Repository.BookingRepository;
 import oc.projet7.bean.BookingDto;
 import oc.projet7.bean.MailDetails;
-import oc.projet7.bean.MemberDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -38,6 +36,9 @@ public class BookingService {
     private MailDetails mailDetails;
 
     @Autowired
+    private MemberService memberService;
+
+    @Autowired
     BookingRepository bookingRepository;
 
     public List<BookingDto> findAll(){
@@ -55,7 +56,8 @@ public class BookingService {
        return newBooking;
     }
 
-    public List<BookingDto> findMyBooking(Member member){
+    public List<BookingDto> findMyBooking(String email){
+    Member member = memberService.getMember(email);
     List<BookingDto> MyBookings = bookingListToDto( bookingRepository.findAllByMember(member));
     return MyBookings;
     }

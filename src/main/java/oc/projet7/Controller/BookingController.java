@@ -48,7 +48,7 @@ public class BookingController {
 
     @GetMapping("/myBooking")
     public ResponseEntity<List<BookingDto>> MyBooking(@RequestBody Member member){
-        List<BookingDto> myBooking = bookingService.findMyBooking(member);
+        List<BookingDto> myBooking = bookingService.findMyBooking(member.getEmail());
         if (myBooking.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
