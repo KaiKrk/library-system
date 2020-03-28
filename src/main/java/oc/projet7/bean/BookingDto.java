@@ -14,9 +14,9 @@ public class BookingDto {
 
     private Book book;
 
-    private LocalDate borrowing_date;
+    private LocalDate borrowingDate;
 
-    private LocalDate return_date;
+    private LocalDate returnDate;
 
     private Boolean renewable;
 
@@ -26,8 +26,8 @@ public class BookingDto {
         this.id = booking.getId();
         this.member = booking.getMembre();
         this.book = booking.getBook();
-        this.borrowing_date = booking.getBorrowing_date();
-        this.return_date = booking.getReturn_date();
+        this.borrowingDate = booking.getBorrowing_date();
+        this.returnDate = booking.getReturn_date();
         this.renewable = booking.getRenewable();
         this.status = booking.getStatus();
     }
@@ -59,20 +59,20 @@ public class BookingDto {
         this.book = book;
     }
 
-    public LocalDate getBorrowing_date() {
-        return borrowing_date;
+    public LocalDate getBorrowingDate() {
+        return borrowingDate;
     }
 
-    public void setBorrowing_date(LocalDate borrowing_date) {
-        this.borrowing_date = borrowing_date;
+    public void setBorrowingDate(LocalDate borrowingDate) {
+        this.borrowingDate = borrowingDate;
     }
 
-    public LocalDate getReturn_date() {
-        return return_date;
+    public LocalDate getReturnDate() {
+        return returnDate;
     }
 
-    public void setReturn_date(LocalDate return_date) {
-        this.return_date = return_date;
+    public void setReturnDate(LocalDate returnDate) {
+        this.returnDate = returnDate;
     }
 
     public Boolean getRenewable() {
@@ -89,5 +89,18 @@ public class BookingDto {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "BookingDto{" +
+                "id=" + id +
+                ", member=" + member +
+                ", book=" + book +
+                ", borrowing_date=" + borrowingDate +
+                ", return_date=" + returnDate +
+                ", renewable=" + renewable +
+                ", status='" + status + '\'' +
+                '}';
     }
 }

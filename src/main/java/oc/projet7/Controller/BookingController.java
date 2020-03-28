@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.time.LocalDate;
@@ -50,12 +47,14 @@ public class BookingController {
         return new ResponseEntity<>(newBooking, HttpStatus.OK);
     }
 
-    @GetMapping("/myBooking")
-    public ResponseEntity<List<BookingDto>> MyBooking(@RequestBody Member member){
+    @PostMapping("/myBookings")
+    public ResponseEntity<List<BookingDto>> MyBooking(@RequestBody BookingRequest bookingRequest){
+        Member member = memberService.getMemberById(bookingRequest.getMemberId());
         List<BookingDto> myBooking = bookingService.findMyBooking(member.getEmail());
         if (myBooking.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        System.out.println(myBooking.toString());
         return new ResponseEntity<>(myBooking, HttpStatus.OK);
     }
 
