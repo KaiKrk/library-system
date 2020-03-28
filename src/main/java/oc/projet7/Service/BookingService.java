@@ -40,11 +40,18 @@ public class BookingService {
     private MemberService memberService;
 
     @Autowired
+    private BookService bookService;
+
+    @Autowired
     BookingRepository bookingRepository;
 
     public List<BookingDto> findAll(){
         List<BookingDto> bookingDtoList = bookingListToDto(bookingRepository.findAll());
         return bookingDtoList;
+    }
+
+    public Booking findBookingById(int id){
+        return bookingRepository.findBookingById(id);
     }
 
     public List<Booking> findAllByStatus(){
@@ -62,6 +69,8 @@ public class BookingService {
         booking.setMembre(member);
         booking.setBook(book);
         booking.setStatus(BookingStatus.EnCours.toString());
+        book.setCopies(book.getCopies()-1);
+        bookService.save(book);
        return bookingRepository.save(booking);
     }
 
@@ -106,8 +115,12 @@ public class BookingService {
         }
     }
     
-    public void extend(Booking booking){
-        
+    public Booking extend(Booking booking){
+        booking.setReturn_date(LocalDate.now().plusMonths(1));
+        booking.setStatus(BookingStatus.Prolongee.toString());
+        booking.setRenewable(false);
+        System.out.println(booking +" extend");
+        return update(booking);
     }
 
     public void sendMail(String recepient) throws MessagingException {

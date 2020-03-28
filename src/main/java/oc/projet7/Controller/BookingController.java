@@ -54,21 +54,15 @@ public class BookingController {
         if (myBooking.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        System.out.println(myBooking.toString());
         return new ResponseEntity<>(myBooking, HttpStatus.OK);
     }
 
-    @GetMapping("/extendBooking")
-    public ResponseEntity<Booking> extendDate(@RequestBody Booking booking){
-        if (booking.getRenewable().equals(true)){
-            LocalDate futureDate = LocalDate.now().plusMonths(1);
-            booking.setReturn_date(futureDate);
-            booking.setRenewable(false);
-            Booking updatedBooking = bookingService.update(booking);
-            return new ResponseEntity<>(updatedBooking, HttpStatus.OK);
+    @PostMapping("/extendBooking")
+    public ResponseEntity<BookingDto> extendDate(@RequestBody BookingRequest bookingRequest){
+        Booking booking = bookingService.findBookingById(bookingRequest.getId());
+        BookingDto bookingDto = new BookingDto(bookingService.extend(booking));
+            return new ResponseEntity<>(bookingDto, HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
 
     @Scheduled(cron = "0 0 6 * * ?")
     public void checkReturnDate() throws MessagingException {
