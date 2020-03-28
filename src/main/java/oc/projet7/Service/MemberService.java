@@ -36,6 +36,11 @@ public class MemberService {
         return member;
     }
 
+    public Member getMemberById(int id){
+        Member member = memberRepository.findById(id);
+        return member;
+    }
+
     public List<MemberDto> MemberListToDto(List<Member> memberList){
         List<MemberDto> memberDtoList = new ArrayList<>();
         for (Member member: memberList) {

@@ -1,5 +1,6 @@
 package oc.projet7.Service;
 
+import oc.projet7.Entity.Book;
 import oc.projet7.Entity.Booking;
 import oc.projet7.Entity.BookingStatus;
 import oc.projet7.Entity.Member;
@@ -51,9 +52,21 @@ public class BookingService {
           return activeBookings;
     }
 
-    public Booking save(Booking booking){
-       Booking newBooking = bookingRepository.save(booking);
-       return newBooking;
+    public Booking save(Member member, Book book){
+        Booking booking = new Booking();
+        LocalDate today =  LocalDate.now();
+        LocalDate futureDate = LocalDate.now().plusMonths(1);
+        booking.setBorrowing_date(today);
+        booking.setReturn_date(futureDate);
+        booking.setRenewable(true);
+        booking.setMembre(member);
+        booking.setBook(book);
+        booking.setStatus(BookingStatus.EnCours.toString());
+       return bookingRepository.save(booking);
+    }
+
+    public Booking update(Booking booking){
+        return bookingRepository.save(booking);
     }
 
     public List<BookingDto> findMyBooking(String email){

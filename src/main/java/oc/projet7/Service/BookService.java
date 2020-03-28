@@ -31,4 +31,8 @@ public class BookService {
         }
         return bookDtoList;
     }
+
+    public Book findBookById( int id){
+        return bookRepository.findBookById(id);
+    }
 }

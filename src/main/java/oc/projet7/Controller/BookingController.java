@@ -3,8 +3,11 @@ package oc.projet7.Controller;
 import oc.projet7.Entity.Book;
 import oc.projet7.Entity.Booking;
 import oc.projet7.Entity.Member;
+import oc.projet7.Service.BookService;
 import oc.projet7.Service.BookingService;
+import oc.projet7.Service.MemberService;
 import oc.projet7.bean.BookingDto;
+import oc.projet7.bean.BookingRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,24 +28,25 @@ public class BookingController {
     @Autowired
     BookingService bookingService;
 
+    @Autowired
+    BookService bookService;
+
+    @Autowired
+    MemberService memberService;
+
     @PostMapping("/saveBooking")
-    public ResponseEntity<Booking> save(@RequestBody Book book, @RequestBody Booking booking, @RequestBody Member member) {
-        LocalDate today =  LocalDate.now();
-        LocalDate futureDate = LocalDate.now().plusMonths(1);
-        booking.setBorrowing_date(today);
-        booking.setReturn_date(futureDate);
-        booking.setRenewable(true);
-        booking.setMembre(member);
-        booking.setBook(book);
-       Booking newBooking =  bookingService.save(booking);
+    public ResponseEntity<Booking> save(@RequestBody BookingRequest bookingRequest) {
+        Member member = memberService.getMemberById(bookingRequest.getMemberId());
+        Book book = bookService.findBookById(bookingRequest.getBookId());
+
+       Booking newBooking =  bookingService.save(member, book);
         return new ResponseEntity<>(newBooking, HttpStatus.CREATED);
     }
 
     @GetMapping("/status")
     public ResponseEntity<Booking> changeStatus(@RequestBody Booking booking, String status){
-        bookingService.changeStatus(booking,status);
-
-        Booking newBooking = bookingService.save(booking);
+        Booking newBooking = bookingService.changeStatus(booking,status);
+        bookingService.update(newBooking);
         return new ResponseEntity<>(newBooking, HttpStatus.OK);
     }
 
@@ -61,8 +65,8 @@ public class BookingController {
             LocalDate futureDate = LocalDate.now().plusMonths(1);
             booking.setReturn_date(futureDate);
             booking.setRenewable(false);
-            bookingService.save(booking);
-            return new ResponseEntity<>(booking, HttpStatus.OK);
+            Booking updatedBooking = bookingService.update(booking);
+            return new ResponseEntity<>(updatedBooking, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
