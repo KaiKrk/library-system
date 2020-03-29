@@ -26,10 +26,10 @@ public class MemberController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/saveMember")
-    public ResponseEntity<Member> save(@RequestBody Member member) {
+    public ResponseEntity<MemberDto> save(@RequestBody Member member) {
         member.setPassword(passwordEncoder.encode(member.getPassword()));
-        memberService.save(member);
-        return new ResponseEntity<>(member, HttpStatus.CREATED);
+        MemberDto memberDto = new MemberDto(memberService.save(member));
+        return new ResponseEntity<>(memberDto, HttpStatus.CREATED);
     }
 
     @GetMapping("/members")

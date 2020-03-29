@@ -32,19 +32,19 @@ public class BookingController {
     MemberService memberService;
 
     @PostMapping("/saveBooking")
-    public ResponseEntity<Booking> save(@RequestBody BookingRequest bookingRequest) {
+    public ResponseEntity<BookingDto> save(@RequestBody BookingRequest bookingRequest) {
         Member member = memberService.getMemberById(bookingRequest.getMemberId());
         Book book = bookService.findBookById(bookingRequest.getBookId());
 
-       Booking newBooking =  bookingService.save(member, book);
+       BookingDto newBooking =  new BookingDto(bookingService.save(member, book));
         return new ResponseEntity<>(newBooking, HttpStatus.CREATED);
     }
 
     @GetMapping("/status")
-    public ResponseEntity<Booking> changeStatus(@RequestBody Booking booking, String status){
+    public ResponseEntity<BookingDto> changeStatus(@RequestBody Booking booking, String status){
         Booking newBooking = bookingService.changeStatus(booking,status);
-        bookingService.update(newBooking);
-        return new ResponseEntity<>(newBooking, HttpStatus.OK);
+        BookingDto bookingDto = new BookingDto(bookingService.update(newBooking));
+        return new ResponseEntity<>(bookingDto, HttpStatus.OK);
     }
 
     @PostMapping("/myBookings")

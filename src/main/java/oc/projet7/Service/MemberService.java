@@ -15,8 +15,8 @@ public class MemberService {
     @Autowired
     private MemberRepository memberRepository;
 
-    public void save(Member theMember) {
-        memberRepository.save(theMember);
+    public Member save(Member theMember) {
+       return memberRepository.save(theMember);
     }
 
     public List<MemberDto> findAll() {
