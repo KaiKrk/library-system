@@ -13,12 +13,23 @@ public class MemberDto {
 
     private String password;
 
+    private boolean isAdmin;
+
     public MemberDto(Member member) {
         this.id = member.getId();
         this.name = member.getName();
         this.surname = member.getSurname();
         this.email = member.getEmail();
         this.password = member.getPassword();
+        this.isAdmin = member.isAdmin();
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 
     public MemberDto() {
@@ -62,5 +73,17 @@ public class MemberDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "MemberDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", isAdmin=" + isAdmin +
+                '}';
     }
 }

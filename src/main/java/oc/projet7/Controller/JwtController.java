@@ -50,13 +50,13 @@ public class JwtController {
 
         final String jwt = jwtTokenUtil.generateToken(userDetails);
         MemberDto member = memberService.getMemberDto(authenticationRequest.getUsername());
-        System.out.println(member.toString());
         AuthUser authUser= new AuthUser();
         authUser.setId(member.getId());
         authUser.setEmail(member.getEmail());
         authUser.setName(member.getName());
         authUser.setSurname(member.getSurname());
         authUser.setToken(jwt);
+        authUser.setAdmin(member.isAdmin());
         System.out.println(authUser.toString());
         return ResponseEntity.ok(authUser);
     }

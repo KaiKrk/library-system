@@ -6,6 +6,15 @@ public class AuthUser {
     private String surname;
     private String name;
     private String token;
+    private boolean isAdmin;
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
 
     public int getId() {
         return id;
@@ -50,10 +59,12 @@ public class AuthUser {
     @Override
     public String toString() {
         return "AuthUser{" +
-                "email='" + email + '\'' +
+                "id=" + id +
+                ", email='" + email + '\'' +
                 ", surname='" + surname + '\'' +
                 ", name='" + name + '\'' +
                 ", token='" + token + '\'' +
+                ", isAdmin=" + isAdmin +
                 '}';
     }
 }

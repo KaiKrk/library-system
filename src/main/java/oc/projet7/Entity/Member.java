@@ -1,5 +1,7 @@
 package oc.projet7.Entity;
 
+import org.springframework.stereotype.Component;
+
 import javax.persistence.*;
 
 @Entity
@@ -22,6 +24,9 @@ public class Member {
 
     @Column(name = "password")
     private String password;
+
+    @Column(name = "admin")
+    private boolean isAdmin;
 
 
     public int getId() {
@@ -83,5 +88,13 @@ public class Member {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }

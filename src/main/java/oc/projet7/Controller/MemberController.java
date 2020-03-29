@@ -28,6 +28,7 @@ public class MemberController {
     @PostMapping("/saveMember")
     public ResponseEntity<MemberDto> save(@RequestBody Member member) {
         member.setPassword(passwordEncoder.encode(member.getPassword()));
+        member.setAdmin(false);
         MemberDto memberDto = new MemberDto(memberService.save(member));
         return new ResponseEntity<>(memberDto, HttpStatus.CREATED);
     }

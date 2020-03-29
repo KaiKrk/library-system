@@ -40,6 +40,12 @@ public class BookingController {
         return new ResponseEntity<>(newBooking, HttpStatus.CREATED);
     }
 
+    @GetMapping("/allBookings")
+    public ResponseEntity<List<BookingDto>> findAllBookings(){
+        List<BookingDto> bookings = bookingService.findAll() ;
+        return new ResponseEntity<>(bookings, HttpStatus.OK);
+    }
+
     @GetMapping("/status")
     public ResponseEntity<BookingDto> changeStatus(@RequestBody Booking booking, String status){
         Booking newBooking = bookingService.changeStatus(booking,status);
