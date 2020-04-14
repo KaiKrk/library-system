@@ -8,6 +8,8 @@ import oc.projet7.Service.BookingService;
 import oc.projet7.Service.MemberService;
 import oc.projet7.bean.BookingDto;
 import oc.projet7.bean.BookingRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,8 @@ import java.util.List;
 
 @RestController
 public class BookingController {
+
+    Logger logger = LoggerFactory.getLogger(BookingController.class);
 
     @Autowired
     BookingService bookingService;
@@ -36,6 +40,7 @@ public class BookingController {
         Member member = memberService.getMemberById(bookingRequest.getMemberId());
         Book book = bookService.findBookById(bookingRequest.getBookId());
 
+        logger.info("New Booking created by " + member.getName() + " for the book " + book.getName());
        BookingDto newBooking =  new BookingDto(bookingService.save(member, book));
         return new ResponseEntity<>(newBooking, HttpStatus.CREATED);
     }
@@ -67,6 +72,7 @@ public class BookingController {
     public ResponseEntity<BookingDto> extendDate(@RequestBody BookingRequest bookingRequest){
         Booking booking = bookingService.findBookingById(bookingRequest.getId());
         BookingDto bookingDto = new BookingDto(bookingService.extend(booking));
+        logger.info("booking number " + booking.getId() + "is extended " );
             return new ResponseEntity<>(bookingDto, HttpStatus.OK);
         }
 
