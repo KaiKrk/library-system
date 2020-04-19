@@ -55,7 +55,7 @@ public class BookingService {
     }
 
     public List<Booking> findAllByStatus(){
-          List<Booking> activeBookings =  bookingRepository.findAllByStatus(bookingStatus);
+          List<Booking> activeBookings =  bookingRepository.findAllByStatus("Actif");
           return activeBookings;
     }
 
@@ -68,7 +68,7 @@ public class BookingService {
         booking.setRenewable(true);
         booking.setMembre(member);
         booking.setBook(book);
-        booking.setStatus(BookingStatus.EnCours.toString());
+        booking.setStatus(BookingStatus.Actif.toString());
         book.setCopies(book.getCopies()-1);
         bookService.save(book);
        return bookingRepository.save(booking);
@@ -95,7 +95,7 @@ public class BookingService {
 
     public Booking changeStatus(Booking booking,String status){
 
-        if (status.equalsIgnoreCase(BookingStatus.EnCours.toString())){
+        if (status.equalsIgnoreCase(BookingStatus.Actif.toString())){
             booking.setStatus(status);
         } else if (status.equalsIgnoreCase(BookingStatus.Prolongee.toString())){
             booking.setStatus(status);
@@ -110,7 +110,8 @@ public class BookingService {
         LocalDate today =  LocalDate.now();
         for (Booking booking: bookings) {
             if (booking.getReturn_date().compareTo(today) > 0){
-            sendMail(booking.getMembre().getEmail());
+                booking.setStatus(BookingStatus.Retard.toString());
+                sendMail(booking.getMembre().getEmail(), booking.getBook().getName());
             }
         }
     }
@@ -123,7 +124,7 @@ public class BookingService {
         return update(booking);
     }
 
-    public void sendMail(String recepient) throws MessagingException {
+    public void sendMail(String recepient, String book) throws MessagingException {
 
 
 
@@ -133,7 +134,7 @@ public class BookingService {
         properties.put("mail.smtp.starttls.enable", "true");
         properties.put("mail.smtp.host", "smtp.gmail.com");
         properties.put("mail.smtp.port", "587");
-
+        System.out.println(" email : " + mailDetails.getMyAccountEmail() + "  " + mailDetails.getPassword());
 
         Session session = Session.getInstance(properties, new Authenticator() {
             @Override
@@ -141,19 +142,19 @@ public class BookingService {
                 return new PasswordAuthentication(mailDetails.getMyAccountEmail(), mailDetails.getPassword());
             }
         });
-        Message message = prepareMessage(session, mailDetails.getMyAccountEmail(), recepient);
+        Message message = prepareMessage(session, mailDetails.getMyAccountEmail(), recepient, book);
 
         Transport.send(message);
 
     }
-    private Message prepareMessage (Session session, String myAccountEmail, String recepient ) throws MessagingException {
+    private Message prepareMessage (Session session, String myAccountEmail, String recepient, String book ) throws MessagingException {
 
         try{
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(myAccountEmail));
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(recepient));
             message.setSubject(mailDetails.getSubject());
-            message.setText(mailDetails.getMessage());
+            message.setText(mailDetails.getMessage() + book);
             return message;
         } catch (AddressException e) {
             e.printStackTrace();

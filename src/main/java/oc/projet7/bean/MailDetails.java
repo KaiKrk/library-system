@@ -9,15 +9,13 @@ public class MailDetails {
 //    @Autowired
 //    MemberService memberService;
 
-    @Value("${account}")
-    private  String myAccountEmail;
+    private  String myAccountEmail = "annalibraryoc@gmail.com";
 
-    @Value("${password}")
-    private  String password;
+    private  String password = "12345LibraryOC";
 
     private String subject = "Retour de livre emprunté";
 
-    private String message = "Bonjour vous avez oublier de rendre votre livre veuillez nous le faire parvenir";
+    private String message = "Bonjour vous avez oublier de rendre votre livre veuillez nous le faire parvenir.\n Livre : ";
 
     public String getSubject() {
         return subject;
